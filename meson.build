@@ -49,23 +49,14 @@ flags = [
 flags = cc.get_supported_arguments(flags)
 
 sources = files(
-  'zathura-pdf-poppler/attachments.c',
-  'zathura-pdf-poppler/document.c',
-  'zathura-pdf-poppler/forms.c',
-  'zathura-pdf-poppler/image.c',
-  'zathura-pdf-poppler/index.c',
-  'zathura-pdf-poppler/links.c',
-  'zathura-pdf-poppler/meta.c',
-  'zathura-pdf-poppler/page.c',
-  'zathura-pdf-poppler/plugin.c',
-  'zathura-pdf-poppler/render.c',
-  'zathura-pdf-poppler/search.c',
-  'zathura-pdf-poppler/select.c',
-  'zathura-pdf-poppler/signature.c',
-  'zathura-pdf-poppler/utils.c'
+  'zathura-gdk-pixbuf/document.c',
+  'zathura-gdk-pixbuf/page.c',
+  'zathura-gdk-pixbuf/plugin.c',
+  'zathura-gdk-pixbuf/render.c',
+  'zathura-gdk-pixbuf/not_implemented.c',
 )
 
-pdf = shared_module('pdf-poppler',
+pdf = shared_module('gdk-pixbuf',
   sources,
   dependencies: build_dependencies,
   c_args: defines + flags,

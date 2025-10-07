@@ -3,7 +3,7 @@
 #include "plugin.h"
 #include "utils.h"
 
-zathura_error_t picture_document_open(zathura_document_t* document) {
+zathura_error_t picture_open(zathura_document_t* document) {
   if (document == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }
@@ -19,21 +19,15 @@ zathura_error_t picture_document_open(zathura_document_t* document) {
     goto error_free;
   }
 
-  PopplerDocument* poppler_document =
-      poppler_document_new_from_file(file_uri, zathura_document_get_password(document), &gerror);
+  GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(file_uri, &gerror);
 
-  if (poppler_document == NULL) {
-    if (gerror != NULL && gerror->code == POPPLER_ERROR_ENCRYPTED) {
-      error = ZATHURA_ERROR_INVALID_PASSWORD;
-    } else {
-      error = ZATHURA_ERROR_UNKNOWN;
-    }
+  if (pixbuf == NULL) {
+    error = ZATHURA_ERROR_UNKNOWN;
     goto error_free;
   }
 
-  zathura_document_set_data(document, poppler_document);
-
-  zathura_document_set_number_of_pages(document, poppler_document_get_n_pages(poppler_document));
+  zathura_document_set_data(document, pixbuf);
+  zathura_document_set_number_of_pages(document, 1);
 
   g_free(file_uri);
 
@@ -50,4 +44,43 @@ error_free:
   }
 
   return error;
+}
+
+zathura_error_t picture_free(zathura_document_t* document, void* data) {
+  if (document == NULL) {
+    return ZATHURA_ERROR_INVALID_ARGUMENTS;
+  }
+
+  GdkPixbuf* pixbuf = data;
+  if (pixbuf != NULL) {
+    g_object_unref(pixbuf);
+    zathura_document_set_data(document, NULL);
+  }
+
+  return ZATHURA_ERROR_OK;
+}
+
+zathura_error_t picture_save_as(zathura_document_t* document, void* data, const char* path) {
+  if (document == NULL || data == NULL || path == NULL) {
+    return ZATHURA_ERROR_INVALID_ARGUMENTS;
+  }
+
+  /* format path */
+  char* file_uri = g_filename_to_uri(path, NULL, NULL);
+  if (file_uri == NULL) {
+    return ZATHURA_ERROR_UNKNOWN;
+  }
+
+  GdkPixbuf* pixbuf = data;
+  const char* type  = strrchr(file_uri, '.');
+  if (!type)
+    return ZATHURA_ERROR_NOT_IMPLEMENTED;
+  type++; // skip the dot
+  // TODO: kerror ?
+  GError* gerror = NULL;
+  gboolean ret   = gdk_pixbuf_save(pixbuf, file_uri, type, &gerror, NULL);
+
+  g_free(file_uri);
+
+  return (ret == TRUE ? ZATHURA_ERROR_OK : ZATHURA_ERROR_UNKNOWN);
 }

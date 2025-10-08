@@ -3,7 +3,7 @@
 #include "plugin.h"
 #include "utils.h"
 
-zathura_error_t picture_open(zathura_document_t* document) {
+zathura_error_t image_open(zathura_document_t* document) {
   if (document == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }
@@ -11,15 +11,15 @@ zathura_error_t picture_open(zathura_document_t* document) {
   zathura_error_t error = ZATHURA_ERROR_OK;
 
   /* format path */
-  GError* gerror = NULL;
-  char* file_uri = g_filename_to_uri(zathura_document_get_path(document), NULL, NULL);
+  GError* gerror        = NULL;
+  const char* file_path = zathura_document_get_path(document);
 
-  if (file_uri == NULL) {
+  if (file_path == NULL) {
     error = ZATHURA_ERROR_UNKNOWN;
     goto error_free;
   }
 
-  GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(file_uri, &gerror);
+  GdkPixbuf* pixbuf = gdk_pixbuf_new_from_file(file_path, &gerror);
 
   if (pixbuf == NULL) {
     error = ZATHURA_ERROR_UNKNOWN;
@@ -29,8 +29,6 @@ zathura_error_t picture_open(zathura_document_t* document) {
   zathura_document_set_data(document, pixbuf);
   zathura_document_set_number_of_pages(document, 1);
 
-  g_free(file_uri);
-
   return ZATHURA_ERROR_OK;
 
 error_free:
@@ -39,14 +37,10 @@ error_free:
     g_error_free(gerror);
   }
 
-  if (file_uri != NULL) {
-    g_free(file_uri);
-  }
-
   return error;
 }
 
-zathura_error_t picture_free(zathura_document_t* document, void* data) {
+zathura_error_t image_free(zathura_document_t* document, void* data) {
   if (document == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }
@@ -60,7 +54,7 @@ zathura_error_t picture_free(zathura_document_t* document, void* data) {
   return ZATHURA_ERROR_OK;
 }
 
-zathura_error_t picture_save_as(zathura_document_t* document, void* data, const char* path) {
+zathura_error_t image_save_as(zathura_document_t* document, void* data, const char* path) {
   if (document == NULL || data == NULL || path == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }

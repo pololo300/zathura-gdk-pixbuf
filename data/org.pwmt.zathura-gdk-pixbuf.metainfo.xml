@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2015-2018 pwmt.org -->
 <component type="addon">
-  <id>org.pwmt.zathura-pdf-poppler</id>
+  <id>org.pwmt.zathura-gdk-pixbuf</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>Zlib</project_license>
   <developer id="org.pwmt">
     <name>pwmt</name>
   </developer>
   <extends>org.pwmt.zathura</extends>
-  <name>Zathura-PDF-Poppler</name>
-  <summary>PDF plugin for zathura based on Poppler</summary>
-  <url type="homepage">https://pwmt.org/projects/zathura-pdf-poppler/</url>
-  <url type="bugtracker">https://github.com/pwmt/zathura-pdf-poppler/issues</url>
-  <url type="donation">https://pwmt.org/help/donate</url>
-  <url type="contact">https://pwmt.org/contact</url>
-  <url type="vcs-browser">https://github.com/pwmt/zathura-pdf-poppler</url>
+  <name>Zathura-Gdk-PixBuf</name>
+  <summary>Image plugin for zathura based on GdkPixbuf</summary>
   <releases>
-    <release version="0.3.3" date="2024-08-04" />
+    <release version="0.1.1" date="2024-08-04" />
   </releases>
 </component>

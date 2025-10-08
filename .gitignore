@@ -9,3 +9,4 @@ compile_commands.json
 subprojects/girara
 subprojects/zathura
 .clangd/
+.cache

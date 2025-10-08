@@ -2,7 +2,7 @@
 
 #include "plugin.h"
 
-zathura_error_t picture_init(zathura_page_t* page) {
+zathura_error_t image_init(zathura_page_t* page) {
   if (page == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }
@@ -14,6 +14,8 @@ zathura_error_t picture_init(zathura_page_t* page) {
     return ZATHURA_ERROR_UNKNOWN;
   }
 
+  zathura_page_set_data(page, pixbuf);
+
   // TODO: ERROR casting?
   double width  = (double)gdk_pixbuf_get_width(pixbuf);
   double height = (double)gdk_pixbuf_get_height(pixbuf);
@@ -23,7 +25,7 @@ zathura_error_t picture_init(zathura_page_t* page) {
   return ZATHURA_ERROR_OK;
 }
 
-zathura_error_t picture_clear(zathura_page_t* page, void* data) {
+zathura_error_t image_clear(zathura_page_t* page, void* data) {
   if (page == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }

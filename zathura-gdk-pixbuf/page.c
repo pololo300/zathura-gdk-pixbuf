@@ -25,15 +25,15 @@ zathura_error_t image_init(zathura_page_t* page) {
   return ZATHURA_ERROR_OK;
 }
 
-zathura_error_t image_clear(zathura_page_t* page, void* data) {
+zathura_error_t image_clear(zathura_page_t* page, void* UNUSED(data)) {
   if (page == NULL) {
     return ZATHURA_ERROR_INVALID_ARGUMENTS;
   }
 
-  GdkPixbuf* pixbuf = data;
-  if (pixbuf != NULL) {
-    g_object_unref(pixbuf);
-  }
-
+  // GdkPixbuf* pixbuf = data;
+  // if (pixbuf != NULL) {
+  //   g_object_unref(pixbuf);
+  // }
+  //
   return ZATHURA_ERROR_OK;
 }
